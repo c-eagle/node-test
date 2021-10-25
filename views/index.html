@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片上传</title>
+</head>
+<body>
+
+<h2> 上传图片测试 </h2>
+<input type="file" name="filename" id="file">
+<input type="submit" onclick="submit()">
+<img src="" alt="" id="img" style="width: 300px; height: 300px;">
+
+<hr />
+<h2> 发送邮件测试 </h2>
+<p>
+    用户名： <input type="text" id="name">
+</p>
+<p>
+    邮箱： <input type="text" id="email">
+</p>
+<p>
+    密码： <input type="password" id="password">
+</p>
+<p>
+    <input type="button" value="注册" onclick="onReg()">
+</p>
+
+<script>
+    /**
+     * 发送邮件
+     */
+    function onReg() {
+        const name = document.getElementById('name').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+
+        fetch('/reg', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        })
+    }
+
+    /**
+     * 图片上传
+     */
+    function submit() {
+        const file = document.getElementById('file').files[0]
+
+        const formData = new FormData()
+        formData.append('filename', file)
+
+        fetch('/', {
+            method: 'post',
+            body: formData
+        }).then(async res => {
+            const data = await res.json()
+            document.getElementById('img').src = data.result
+        })
+    }
+</script>
+
+
+</body>
+</html>
