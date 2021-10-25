@@ -10,7 +10,7 @@ RUN mkdir -p /home/node-test
 WORKDIR /home/node-test
 
 # 复制文件
-COPY /home/node-test /home/node-test
+COPY . /home/node-test
 RUN npm install
 
 EXPOSE 4000
