@@ -3,6 +3,7 @@ import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
 import sendEmail from "../common/sendEmail.js";
+import connection from '../db/index.js';
 
 const indexRouter = express()
 const upload = multer({
@@ -24,10 +25,12 @@ indexRouter.post('/', upload.single('filename'), ((req, res) => {
                 res.send('文件写入失败')
             }
             fs.unlinkSync(req.file.path)
-            res.json({
-                code: 200,
-                result: `/upload/${req.file.originalname}`,
-                message: '图片上传成功'
+            connection.query("INSERT INTO `imgs` (`img_url`) VALUES ('/upload/"+ req.file.originalname +"')", (err) => {
+                res.json({
+                    code: 200,
+                    result: `/upload/${req.file.originalname}`,
+                    message: '图片上传成功'
+                })
             })
         })
     })

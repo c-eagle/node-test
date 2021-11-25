@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {margin: 0; padding: 0;}
+    ul, li{list-style: none;}
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    a {
+      padding-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  
+<ul>
+  
+    <table border="1" width="100%">
+      <tr>
+        <th>id</th>
+        <th>图片</th>
+        <th>操作</th>
+      </tr>
+      <% data.forEach(value => { %>
+      <tr>
+        <td><%= value.id%></td>
+        <td><img src="<%= value.img_url%>" alt=""></td>
+        <td>
+          <a onclick="del(<%= value.id %>)">删除</a>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+</ul>
+
+<script>
+function del(id) {
+  fetch(`/imgs/del?id=${id}`, {
+    method: 'get'
+  }).then(async res => {
+    const data = await res.json()
+    if (data.code === 200) {
+      alert('删除成功')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
+    } else {
+      alert('删除失败')
+    }
+  })
+}
+</script>
+</body>
+</html>
